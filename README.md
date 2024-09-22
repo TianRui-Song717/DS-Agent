@@ -25,8 +25,11 @@ pip install -e.
 Then, please install neccessary libraries in the requirements.
 
 ```shell
+# (ERROR: Failed building wheel for cchardet) might occurred because of not install cython: pip install cython
 pip install -r requirements.txt
 ```
+
+
 
 Since DS-Agent mainly utilizes GPT-3.5 and GPT-4 for all the experiments, please fill in the openai key in development/MLAgentBench/LLM.py and deployment/generate.py
 
