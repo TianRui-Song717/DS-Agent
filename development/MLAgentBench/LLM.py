@@ -5,6 +5,10 @@ from functools import partial
 import tiktoken
 from .schema import TooLongPromptError, LLMError
 
+import json
+import requests
+
+
 enc = tiktoken.get_encoding("cl100k_base")
 STATISTICAL_DIR = None
 FINETUNE_STEP = 0
@@ -156,11 +160,26 @@ def complete_text_openai(prompt, stop_sequences=[], model="gpt-3.5-turbo", max_t
         try:
             if model.startswith("gpt-3.5") or model.startswith("gpt-4"):
                 messages = [{"role": "user", "content": prompt}]
-                response = openai.ChatCompletion.create(**{"messages": messages,**raw_request})
+                # response = openai.ChatCompletion.create(**{"messages": messages,**raw_request})  # origin DS-Agent
+
+                # HKUST-GZ API
+                API_KEY = "d0d2667b2e554fd79ab124c8551b42656bdd845392be4823b3629a5154828a0d"
+                URL = "https://gpt-api.hkust-gz.edu.cn/v1/chat/completions"
+                HEADERS = {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer {}".format(API_KEY)
+                }
+                response = requests.post(URL, headers=HEADERS, data=json.dumps(**{"messages": messages, **raw_request}))
+                response.raise_for_status()
+                response = response.json()
+
                 completion = response["choices"][0]["message"]["content"]
             else:
-                response = openai.Completion.create(**{"prompt": prompt,**raw_request})
-                completion = response["choices"][0]["text"]
+                # response = openai.Completion.create(**{"prompt": prompt,**raw_request})  # origin openai
+                # completion = response["choices"][0]["text"]
+
+                # HKUST-GZ API
+                raise ValueError("Completion is not allowed in the HKUST-GZ API, you can use chat completion API")
             break
         except Exception as e:
             iteration += 1

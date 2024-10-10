@@ -41,7 +41,7 @@ def run(agent_cls, args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--task", type=str, default="feedback", help="task name")
+    parser.add_argument("--task", type=str, default="airline-reviews", help="task name")  # feedback
     parser.add_argument("--log-dir", type=str, default="./logs", help="log dir")
     parser.add_argument("--work-dir", type=str, default="./workspace", help="work dir")
     parser.add_argument("--max-steps", type=int, default=30, help="number of steps")

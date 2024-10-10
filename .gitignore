@@ -1,4 +1,5 @@
 /.idea
 /development/data/
 /development/benchmarks/
-
+/development/MLAgentBench/data/
+/development/MLAgentBench/benchmarks/
